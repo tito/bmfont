@@ -87,6 +87,9 @@ class BMFont(object):
             ic['width'], -ic['height'])
         return region
 
+    def get_info_char(self, c):
+        return self.chars.get(ord(c))
+
 
 class BMCoreLabel(LabelBase):
 
@@ -129,8 +132,10 @@ class BMCoreLabel(LabelBase):
         return ImageData(fbo.size[0], fbo.size[1], 'rgba', fbo.pixels)
 
     def _render_glyph(self, c, x, y):
+        ic = self._font.get_info_char(c)
+        if not ic:
+            return 0
         texture = self._font.get_texture_char(c)
-        ic = self._font.chars[ord(c)]
         h = ic['height']
         Rectangle(
             pos=(x + ic['xoffset'], y + ic['yoffset']),
